@@ -87,8 +87,8 @@ static int (*func_socket) (int, int, int) = NULL;
 static int (*func_bind) (int, const struct sockaddr *, int) = NULL;
 static int (*func_write) (int, const void *, size_t) = NULL;
 
-static void _libmexmon_init() __attribute__ ((constructor));
-static void _libmexmon_init() {
+static void _libnexmon_init() __attribute__ ((constructor));
+static void _libnexmon_init() {
     nexio = nex_init_ioctl(ifname);
 
     if (! func_ioctl)
@@ -313,7 +313,7 @@ socket(int domain, int type, int protocol)
 }
 
 int
-bind(int sockfd, const struct sockaddr *addr, int addrlen)
+bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
 {
     int ret;
     struct sockaddr_ll *sll = (struct sockaddr_ll *) addr;
@@ -323,7 +323,7 @@ bind(int sockfd, const struct sockaddr *addr, int addrlen)
     char sll_ifname[IF_NAMESIZE] = { 0 };
     if_indextoname(sll->sll_ifindex, sll_ifname);
 
-    if ((sockfd < sizeof(bound_to_correct_if)/sizeof(bound_to_correct_if[0])) && !strncmp(ifname, sll_ifname, sizeof(ifname)))
+    if ((sockfd < sizeof(bound_to_correct_if)/sizeof(bound_to_correct_if[0])) && !strncmp(ifname, sll_ifname, strlen(ifname)))
         bound_to_correct_if[sockfd] = 1;
 
     //printf("LIBNEXMON: %d = %s(%d, 0x%p, %d) sll_ifindex=%d ifname=%s\n", ret, __FUNCTION__, sockfd, addr, addrlen, sll->sll_ifindex, sll_ifname);
