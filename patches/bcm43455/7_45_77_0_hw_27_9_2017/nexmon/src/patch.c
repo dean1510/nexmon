@@ -50,11 +50,11 @@ __attribute__((at(0x20B2A0, "", CHIP_VER_BCM43455, FW_VER_7_45_77_0_27_9_2017)))
 BLPatch(wlc_ucode_write_compressed, wlc_ucode_write_compressed);
 
 // reduce the amount of ucode memory freed to become part of the heap
-__attribute__((at(0x19A8A4, "", CHIP_VER_BCM43455, FW_VER_7_45_77_0_27_9_2017)))
+__attribute__((at(0x19A8A4, "", CHIP_VER_BCM43455, FW_VER_7_45_77_0_27_9_2017))) // HNDRTE_RECLAIM_0_END
 GenericPatch4(hndrte_reclaim_0_end, PATCHSTART);
 
 extern unsigned char templateram_bin[];
 
 // Moving template ram to another place in the ucode region
-__attribute__((at(0x21CF20, "", CHIP_VER_BCM43455, FW_VER_7_45_77_0_27_9_2017))) // find TEMPLATERAMSTART value in binary
+__attribute__((at(0x21CF20, "", CHIP_VER_BCM43455, FW_VER_7_45_77_0_27_9_2017))) // TEMPLATERAMSTART
 GenericPatch4(templateram_bin, templateram_bin);
